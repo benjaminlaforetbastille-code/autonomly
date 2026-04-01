@@ -140,9 +140,9 @@ input::placeholder{color:#C4A882}
   </div>
   <div class="card">
     <span class="flabel">Vos coordonnées</span>
-    <form id="sim-form" action="https://formspree.io/f/mnjozwll" method="POST">
-      <input type="hidden" name="_subject" value="Nouvelle simulation locative Autonomly">
-      <input type="hidden" name="_next" value="https://autonomly.fr/simulateur.html#results">
+    <form id="sim-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="afb11d28-4758-4f93-8009-1174a851f50f"><input type="hidden" name="subject" value="Nouvelle simulation locative Autonomly"><input type="hidden" name="redirect" value="false">
+      
       <input type="hidden" id="h-type" name="Type de bien" value="">
       <input type="hidden" id="h-zone" name="Zone" value="">
       <input type="hidden" id="h-etat" name="Etat" value="">
@@ -285,7 +285,7 @@ function submitForm(){
   // Soumettre le formulaire Formspree en arrière-plan
   const form=document.getElementById('sim-form');
   const data=new FormData(form);
-  fetch('https://formspree.io/f/mnjozwll',{
+  fetch('https://api.web3forms.com/submit',{
     method:'POST',
     body:data,
     headers:{'Accept':'application/json'}
