@@ -69,6 +69,7 @@ input::placeholder{color:#C4A882}
 .next-btn:hover{background:var(--terre)}
 .err{font-size:12px;color:#A32D2D;margin-bottom:8px;display:none}
 .note-bas{font-size:11px;color:var(--doux);text-align:center;margin-top:10px}
+.sending{display:none;text-align:center;padding:20px;font-size:14px;color:var(--doux)}
 @media(max-width:500px){.grid5{grid-template-columns:repeat(3,1fr)}.res-grid{grid-template-columns:1fr}.seasons{grid-template-columns:1fr}}
 </style>
 </head>
@@ -150,7 +151,8 @@ input::placeholder{color:#C4A882}
     <input type="tel" id="c-tel" placeholder="Votre téléphone *">
     <input type="email" id="c-email" placeholder="Votre email *">
     <div class="err" id="err">Merci de renseigner tous les champs obligatoires.</div>
-    <button class="cta" onclick="goStep3()">Voir mon estimation instantanée →</button>
+    <div class="sending" id="sending">Envoi en cours...</div>
+    <button class="cta" id="btn2" onclick="goStep3()">Voir mon estimation instantanée →</button>
     <p class="note-bas">Vos données sont confidentielles · Jamais revendues · Réponse sous 24h</p>
   </div>
 </div>
@@ -246,20 +248,21 @@ function goStep2(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function goStep3(){
+async function goStep3(){
   const nom=document.getElementById('c-nom').value.trim();
   const tel=document.getElementById('c-tel').value.trim();
   const email=document.getElementById('c-email').value.trim();
   const adresse=document.getElementById('c-adresse').value.trim();
+
   if(!nom||!tel||!email||!adresse){
     document.getElementById('err').style.display='block';
     return;
   }
   document.getElementById('err').style.display='none';
+  document.getElementById('btn2').disabled=true;
+  document.getElementById('sending').style.display='block';
 
-  const body=`Prénom: ${nom}%0ATéléphone: ${tel}%0AEmail: ${email}%0AAdresse: ${adresse}%0A%0AType de bien: ${tl[s.type]}%0AZone: ${zl[s.zone]}%0AÉtat: ${el[s.etat]}`;
-  window.location.href=`mailto:benjaminhagege5@gmail.com?subject=Simulation locative Autonomly — ${nom}&body=${body}`;
-
+  // Calcul résultats
   const base=data[s.type];
   const h=Math.round(base.haute*zm[s.zone]*em[s.etat]);
   const m=Math.round(base.moy*zm[s.zone]*em[s.etat]);
@@ -269,6 +272,29 @@ function goStep3(){
   const conc=Math.round(mensuel*0.23);
   const econ=(conc-179)*12;
 
+  // Envoi Formspree
+  try {
+    await fetch('https://formspree.io/f/mnjozwll', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({
+        prenom: nom,
+        telephone: tel,
+        email: email,
+        adresse: adresse,
+        type_bien: tl[s.type],
+        zone: zl[s.zone],
+        etat: el[s.etat],
+        revenu_mensuel_estime: fmt(mensuel)+'/mois',
+        revenu_annuel_estime: fmt(annuel)+'/an',
+        economie_annuelle: econ>0?fmt(econ)+'/an':'—'
+      })
+    });
+  } catch(e) {
+    console.log('Formspree error', e);
+  }
+
+  // Affichage résultats
   document.getElementById('res-title').textContent=`${tl[s.type]} · ${zl[s.zone]} · ${nom}`;
   document.getElementById('rev-moy').textContent=fmt(mensuel)+'/mois';
   document.getElementById('rev-an').textContent=fmt(annuel)+'/an';
