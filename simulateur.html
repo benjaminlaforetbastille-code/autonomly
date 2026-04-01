@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur locatif Nice — Autonomly</title>
+<meta name="description" content="Estimez les revenus de votre bien en location courte durée à Nice. Résultat immédiat basé sur les données réelles du marché.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--terre:#2C1A0A;--or:#B07D4A;--miel:#D4A96A;--sauge:#3D6B5E;--lin:#F5EFE6;--blanc:#F9F5F0;--pur:#fff;--texte:#2C1A0A;--doux:#8C6A4A;--bord:#E8DDD0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--blanc);color:var(--texte);min-height:100vh}
+.page{max-width:660px;margin:0 auto;padding:48px 20px 80px}
+a.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--terre);text-decoration:none;display:block;margin-bottom:36px}
+a.logo span{color:var(--or)}
+.badge{display:inline-block;background:var(--lin);color:var(--doux);font-size:11px;padding:5px 14px;border-radius:20px;margin-bottom:14px;border:1px solid var(--bord)}
+h1{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;color:var(--terre);line-height:1.2;letter-spacing:-1px;margin-bottom:10px}
+h1 em{color:var(--or);font-style:normal}
+.intro{font-size:14px;color:var(--doux);line-height:1.7;margin-bottom:12px}
+.promise-box{background:var(--pur);border:1px solid var(--or);border-radius:12px;padding:14px 18px;margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.promise-icon{width:36px;height:36px;background:var(--lin);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.promise-text{font-size:13px;color:var(--terre);line-height:1.6}
+.promise-text strong{font-weight:500}
+.card{background:var(--pur);border:1px solid var(--bord);border-radius:16px;padding:26px;margin-bottom:14px}
+.flabel{font-size:11px;font-weight:500;color:var(--doux);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:block}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.opt{background:var(--blanc);border:1px solid var(--bord);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .15s;font-size:12px;color:var(--doux);font-family:'DM Sans',sans-serif;line-height:1.4}
+.opt:hover{border-color:var(--or);color:var(--terre)}
+.opt.active{background:var(--lin);border-color:var(--or);color:var(--terre);font-weight:500}
+.opt-icon{font-size:20px;display:block;margin-bottom:4px}
+input{width:100%;background:var(--blanc);border:1px solid var(--bord);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--texte);font-family:'DM Sans',sans-serif;transition:border-color .2s;margin-bottom:10px;display:block}
+input:focus{outline:none;border-color:var(--or)}
+input::placeholder{color:#C4A882}
+.cta{width:100%;background:var(--or);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;margin-top:4px}
+.cta:hover{background:var(--terre)}
+.cta:disabled{background:#C4A882;cursor:not-allowed}
+.step{display:none}
+.step.active{display:block}
+.stepper{display:flex;gap:8px;margin-bottom:28px;align-items:center}
+.sdot{width:28px;height:28px;border-radius:50%;border:1px solid var(--bord);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--doux);background:var(--pur);flex-shrink:0}
+.sdot.done{background:var(--or);border-color:var(--or);color:#fff}
+.sdot.current{background:var(--lin);border-color:var(--or);color:var(--terre)}
+.sline{flex:1;height:1px;background:var(--bord)}
+.step2-promise{background:var(--lin);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--terre);line-height:1.6;border:1px solid var(--bord)}
+.step2-promise strong{color:var(--or)}
+.res-header{background:var(--terre);border-radius:16px;padding:26px;margin-bottom:14px}
+.res-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--lin);margin-bottom:18px;font-weight:500}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.res-box{background:rgba(255,255,255,.07);border-radius:10px;padding:14px}
+.res-lbl{font-size:10px;color:var(--miel);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.res-val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#fff}
+.res-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.saving{background:var(--or);border-radius:10px;padding:18px;text-align:center}
+.saving-lbl{font-size:11px;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.saving-val{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;color:#fff}
+.saving-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px}
+.seasons{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.season{background:var(--pur);border:1px solid var(--bord);border-radius:12px;padding:14px;text-align:center}
+.season-name{font-size:11px;color:var(--doux);margin-bottom:5px;line-height:1.4}
+.season-val{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--terre)}
+.season-range{font-size:10px;color:var(--doux);margin-top:2px}
+.disclaimer{background:var(--lin);border:1px solid var(--bord);border-radius:12px;padding:16px;font-size:12px;color:var(--doux);line-height:1.6;margin-bottom:14px}
+.disclaimer strong{color:var(--terre)}
+.next-steps{background:var(--pur);border:1px solid var(--bord);border-radius:16px;padding:26px;text-align:center}
+.next-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--terre);margin-bottom:8px}
+.next-sub{font-size:13px;color:var(--doux);line-height:1.65;margin-bottom:20px}
+.next-btn{display:inline-block;background:var(--or);color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:500;transition:background .2s}
+.next-btn:hover{background:var(--terre)}
+.err{font-size:12px;color:#A32D2D;margin-bottom:8px;display:none}
+.note-bas{font-size:11px;color:var(--doux);text-align:center;margin-top:10px}
+@media(max-width:500px){.grid5{grid-template-columns:repeat(3,1fr)}.res-grid{grid-template-columns:1fr}.seasons{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<a href="https://autonomly.fr" class="logo">Auto<span>nom</span>ly</a>
+<div class="badge">Simulateur locatif · Nice</div>
+<h1>Estimez les revenus<br>de votre bien à <em>Nice</em></h1>
+<p class="intro">Renseignez votre bien en 2 étapes et obtenez votre estimation immédiatement.</p>
+
+<div class="promise-box">
+  <div class="promise-icon">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="#B07D4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="promise-text"><strong>Résultat immédiat garanti</strong> — Vous verrez votre estimation dès la fin du questionnaire. Notre équipe vous rappelle ensuite sous 24h pour affiner les chiffres selon votre bien.</div>
+</div>
+
+<!-- STEP 1 -->
+<div class="step active" id="step1">
+  <div class="stepper">
+    <div class="sdot current">1</div>
+    <div class="sline"></div>
+    <div class="sdot">2</div>
+    <div class="sline"></div>
+    <div class="sdot">3</div>
+  </div>
+
+  <div class="card">
+    <span class="flabel">Type de bien</span>
+    <div class="grid5">
+      <button class="opt" onclick="sel('type','studio',this)"><span class="opt-icon">🏠</span>Studio</button>
+      <button class="opt" onclick="sel('type','t1',this)"><span class="opt-icon">🛏</span>T1</button>
+      <button class="opt" onclick="sel('type','t2',this)"><span class="opt-icon">🛏</span>T2</button>
+      <button class="opt" onclick="sel('type','t3',this)"><span class="opt-icon">🏡</span>T3</button>
+      <button class="opt" onclick="sel('type','t4',this)"><span class="opt-icon">🏠</span>T4+</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="flabel">Zone géographique</span>
+    <div class="grid3">
+      <button class="opt" onclick="sel('zone','premium',this)"><span class="opt-icon">⭐</span><span>Vieille Ville<br>Bord de mer</span></button>
+      <button class="opt" onclick="sel('zone','forte',this)"><span class="opt-icon">🌆</span><span>Centre<br>Promenade</span></button>
+      <button class="opt" onclick="sel('zone','standard',this)"><span class="opt-icon">🏘</span><span>Périphérie<br>Aéroport</span></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="flabel">État et équipements</span>
+    <div class="grid3">
+      <button class="opt" onclick="sel('etat','standard',this)"><span class="opt-icon">🔑</span>Standard</button>
+      <button class="opt" onclick="sel('etat','bon',this)"><span class="opt-icon">✨</span>Bon état</button>
+      <button class="opt" onclick="sel('etat','premium',this)"><span class="opt-icon">💎</span>Premium</button>
+    </div>
+  </div>
+
+  <button class="cta" id="btn1" onclick="goStep2()" disabled>Continuer →</button>
+</div>
+
+<!-- STEP 2 — COORDONNÉES -->
+<div class="step" id="step2">
+  <div class="stepper">
+    <div class="sdot done">✓</div>
+    <div class="sline"></div>
+    <div class="sdot current">2</div>
+    <div class="sline"></div>
+    <div class="sdot">3</div>
+  </div>
+
+  <div class="step2-promise">
+    Vous y êtes presque — renseignez vos coordonnées et <strong>votre estimation s'affiche immédiatement</strong>. Notre équipe vous rappelle ensuite pour l'affiner.
+  </div>
+
+  <div class="card">
+    <span class="flabel">Vos coordonnées</span>
+    <input type="text" id="c-nom" placeholder="Votre prénom *">
+    <input type="text" id="c-adresse" placeholder="Adresse ou quartier du bien *">
+    <input type="tel" id="c-tel" placeholder="Votre téléphone *">
+    <input type="email" id="c-email" placeholder="Votre email *">
+    <div class="err" id="err">Merci de renseigner tous les champs obligatoires.</div>
+    <button class="cta" onclick="goStep3()">Voir mon estimation instantanée →</button>
+    <p class="note-bas">Vos données sont confidentielles · Jamais revendues · Réponse sous 24h</p>
+  </div>
+</div>
+
+<!-- STEP 3 — RÉSULTATS -->
+<div class="step" id="step3">
+  <div class="stepper">
+    <div class="sdot done">✓</div>
+    <div class="sline"></div>
+    <div class="sdot done">✓</div>
+    <div class="sline"></div>
+    <div class="sdot done">✓</div>
+  </div>
+
+  <div class="res-header">
+    <div class="res-title" id="res-title">Estimation pour votre bien</div>
+    <div class="res-grid">
+      <div class="res-box">
+        <div class="res-lbl">Revenu mensuel moyen</div>
+        <div class="res-val" id="rev-moy">—</div>
+        <div class="res-sub">estimation indicative</div>
+      </div>
+      <div class="res-box">
+        <div class="res-lbl">Revenu annuel estimé</div>
+        <div class="res-val" id="rev-an">—</div>
+        <div class="res-sub">avant charges</div>
+      </div>
+    </div>
+    <div class="saving">
+      <div class="saving-lbl">Économie annuelle avec Autonomly vs conciergerie 23%</div>
+      <div class="saving-val" id="saving">—</div>
+      <div class="saving-sub" id="saving-sub">—</div>
+    </div>
+  </div>
+
+  <div class="seasons">
+    <div class="season">
+      <div class="season-name">Haute saison<br>juin – août</div>
+      <div class="season-val" id="s-haute">—</div>
+      <div class="season-range">/mois estimé</div>
+    </div>
+    <div class="season">
+      <div class="season-name">Moyenne saison<br>avr – mai · sept – oct</div>
+      <div class="season-val" id="s-moy">—</div>
+      <div class="season-range">/mois estimé</div>
+    </div>
+    <div class="season">
+      <div class="season-name">Basse saison<br>nov – mars</div>
+      <div class="season-val" id="s-basse">—</div>
+      <div class="season-range">/mois estimé</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Estimation indicative</strong> — Ces chiffres sont basés sur les données moyennes du marché LCD à Nice. Les revenus réels dépendent de l'état du bien, de la qualité des photos et de l'optimisation de l'annonce. Notre équipe vous recontacte sous 24h pour affiner cette estimation selon votre bien spécifique.
+  </div>
+
+  <div class="next-steps">
+    <div class="next-title">Notre équipe vous rappelle sous 24h.</div>
+    <div class="next-sub">Nous allons analyser votre bien en détail et vous proposer une estimation personnalisée, ainsi qu'un plan d'action concret pour maximiser vos revenus avec Autonomly — gratuitement et sans engagement.</div>
+    <a href="https://autonomly.fr" class="next-btn">Découvrir Autonomly</a>
+    <p class="note-bas" style="margin-top:16px">Gratuit · Sans engagement · Basé à Nice</p>
+  </div>
+</div>
+
+</div>
+<script>
+const s={type:null,zone:null,etat:null};
+const data={
+  studio:{haute:2800,moy:2000,basse:1200},
+  t1:    {haute:3800,moy:2600,basse:1500},
+  t2:    {haute:5200,moy:3500,basse:2000},
+  t3:    {haute:7000,moy:4800,basse:2900},
+  t4:    {haute:9500,moy:6800,basse:3800}
+};
+const zm={premium:1.25,forte:1.0,standard:0.78};
+const em={standard:0.88,bon:1.0,premium:1.15};
+const tl={studio:'Studio',t1:'T1',t2:'T2',t3:'T3',t4:'T4+'};
+const zl={premium:'Vieille Ville / Bord de mer',forte:'Centre / Promenade',standard:'Périphérie'};
+const el={standard:'Standard',bon:'Bon état',premium:'Premium'};
+const fmt=n=>Math.round(n).toLocaleString('fr-FR')+' €';
+
+function sel(key,val,btn){
+  s[key]=val;
+  btn.parentElement.querySelectorAll('.opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('btn1').disabled=!(s.type&&s.zone&&s.etat);
+}
+
+function goStep2(){
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goStep3(){
+  const nom=document.getElementById('c-nom').value.trim();
+  const tel=document.getElementById('c-tel').value.trim();
+  const email=document.getElementById('c-email').value.trim();
+  const adresse=document.getElementById('c-adresse').value.trim();
+  if(!nom||!tel||!email||!adresse){
+    document.getElementById('err').style.display='block';
+    return;
+  }
+  document.getElementById('err').style.display='none';
+
+  const body=`Prénom: ${nom}%0ATéléphone: ${tel}%0AEmail: ${email}%0AAdresse: ${adresse}%0A%0AType de bien: ${tl[s.type]}%0AZone: ${zl[s.zone]}%0AÉtat: ${el[s.etat]}`;
+  window.location.href=`mailto:benjaminhagege5@gmail.com?subject=Simulation locative Autonomly — ${nom}&body=${body}`;
+
+  const base=data[s.type];
+  const h=Math.round(base.haute*zm[s.zone]*em[s.etat]);
+  const m=Math.round(base.moy*zm[s.zone]*em[s.etat]);
+  const b=Math.round(base.basse*zm[s.zone]*em[s.etat]);
+  const mensuel=Math.round((h*3+m*5+b*4)/12);
+  const annuel=mensuel*12;
+  const conc=Math.round(mensuel*0.23);
+  const econ=(conc-179)*12;
+
+  document.getElementById('res-title').textContent=`${tl[s.type]} · ${zl[s.zone]} · ${nom}`;
+  document.getElementById('rev-moy').textContent=fmt(mensuel)+'/mois';
+  document.getElementById('rev-an').textContent=fmt(annuel)+'/an';
+  document.getElementById('s-haute').textContent=fmt(h);
+  document.getElementById('s-moy').textContent=fmt(m);
+  document.getElementById('s-basse').textContent=fmt(b);
+  document.getElementById('saving').textContent=econ>0?fmt(econ)+'/an':'Autonomly compétitif';
+  document.getElementById('saving-sub').textContent=econ>0?`soit ${fmt(conc-179)} de plus dans votre poche chaque mois`:'Contactez-nous pour une estimation personnalisée';
+
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step3').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
