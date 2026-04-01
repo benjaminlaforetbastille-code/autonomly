@@ -25,12 +25,13 @@ h1 em{color:var(--or);font-style:normal}
 .flabel{font-size:11px;font-weight:500;color:var(--doux);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:block}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
-.opt{background:var(--blanc);border:1px solid var(--bord);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .15s;font-size:12px;color:var(--doux);font-family:'DM Sans',sans-serif;line-height:1.4}
+.opt{background:var(--blanc);border:1px solid var(--bord);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .15s;font-size:12px;color:var(--doux);font-family:'DM Sans',sans-serif;line-height:1.4;width:100%}
 .opt:hover{border-color:var(--or);color:var(--terre)}
 .opt.active{background:var(--lin);border-color:var(--or);color:var(--terre);font-weight:500}
 .opt-icon{font-size:20px;display:block;margin-bottom:4px}
-input{width:100%;background:var(--blanc);border:1px solid var(--bord);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--texte);font-family:'DM Sans',sans-serif;transition:border-color .2s;margin-bottom:10px;display:block}
-input:focus{outline:none;border-color:var(--or)}
+input[type=text],input[type=email],input[type=tel],input[type=hidden]{width:100%;background:var(--blanc);border:1px solid var(--bord);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--texte);font-family:'DM Sans',sans-serif;transition:border-color .2s;margin-bottom:10px;display:block}
+input[type=hidden]{display:none}
+input[type=text]:focus,input[type=email]:focus,input[type=tel]:focus{outline:none;border-color:var(--or)}
 input::placeholder{color:#C4A882}
 .cta{width:100%;background:var(--or);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;margin-top:4px}
 .cta:hover{background:var(--terre)}
@@ -44,6 +45,8 @@ input::placeholder{color:#C4A882}
 .sline{flex:1;height:1px;background:var(--bord)}
 .step2-promise{background:var(--lin);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--terre);line-height:1.6;border:1px solid var(--bord)}
 .step2-promise strong{color:var(--or)}
+.err{font-size:12px;color:#A32D2D;margin-bottom:8px;display:none}
+.note-bas{font-size:11px;color:var(--doux);text-align:center;margin-top:10px}
 .res-header{background:var(--terre);border-radius:16px;padding:26px;margin-bottom:14px}
 .res-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--lin);margin-bottom:18px;font-weight:500}
 .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
@@ -67,9 +70,6 @@ input::placeholder{color:#C4A882}
 .next-sub{font-size:13px;color:var(--doux);line-height:1.65;margin-bottom:20px}
 .next-btn{display:inline-block;background:var(--or);color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:500;transition:background .2s}
 .next-btn:hover{background:var(--terre)}
-.err{font-size:12px;color:#A32D2D;margin-bottom:8px;display:none}
-.note-bas{font-size:11px;color:var(--doux);text-align:center;margin-top:10px}
-.sending{display:none;text-align:center;padding:20px;font-size:14px;color:var(--doux)}
 @media(max-width:500px){.grid5{grid-template-columns:repeat(3,1fr)}.res-grid{grid-template-columns:1fr}.seasons{grid-template-columns:1fr}}
 </style>
 </head>
@@ -97,40 +97,36 @@ input::placeholder{color:#C4A882}
     <div class="sline"></div>
     <div class="sdot">3</div>
   </div>
-
   <div class="card">
     <span class="flabel">Type de bien</span>
     <div class="grid5">
-      <button class="opt" onclick="sel('type','studio',this)"><span class="opt-icon">🏠</span>Studio</button>
-      <button class="opt" onclick="sel('type','t1',this)"><span class="opt-icon">🛏</span>T1</button>
-      <button class="opt" onclick="sel('type','t2',this)"><span class="opt-icon">🛏</span>T2</button>
-      <button class="opt" onclick="sel('type','t3',this)"><span class="opt-icon">🏡</span>T3</button>
-      <button class="opt" onclick="sel('type','t4',this)"><span class="opt-icon">🏠</span>T4+</button>
+      <button type="button" class="opt" onclick="sel('type','Studio',this)"><span class="opt-icon">🏠</span>Studio</button>
+      <button type="button" class="opt" onclick="sel('type','T1',this)"><span class="opt-icon">🛏</span>T1</button>
+      <button type="button" class="opt" onclick="sel('type','T2',this)"><span class="opt-icon">🛏</span>T2</button>
+      <button type="button" class="opt" onclick="sel('type','T3',this)"><span class="opt-icon">🏡</span>T3</button>
+      <button type="button" class="opt" onclick="sel('type','T4+',this)"><span class="opt-icon">🏠</span>T4+</button>
     </div>
   </div>
-
   <div class="card">
     <span class="flabel">Zone géographique</span>
     <div class="grid3">
-      <button class="opt" onclick="sel('zone','premium',this)"><span class="opt-icon">⭐</span><span>Vieille Ville<br>Bord de mer</span></button>
-      <button class="opt" onclick="sel('zone','forte',this)"><span class="opt-icon">🌆</span><span>Centre<br>Promenade</span></button>
-      <button class="opt" onclick="sel('zone','standard',this)"><span class="opt-icon">🏘</span><span>Périphérie<br>Aéroport</span></button>
+      <button type="button" class="opt" onclick="sel('zone','Vieille Ville / Bord de mer',this)"><span class="opt-icon">⭐</span><span>Vieille Ville<br>Bord de mer</span></button>
+      <button type="button" class="opt" onclick="sel('zone','Centre / Promenade',this)"><span class="opt-icon">🌆</span><span>Centre<br>Promenade</span></button>
+      <button type="button" class="opt" onclick="sel('zone','Périphérie / Aéroport',this)"><span class="opt-icon">🏘</span><span>Périphérie<br>Aéroport</span></button>
     </div>
   </div>
-
   <div class="card">
     <span class="flabel">État et équipements</span>
     <div class="grid3">
-      <button class="opt" onclick="sel('etat','standard',this)"><span class="opt-icon">🔑</span>Standard</button>
-      <button class="opt" onclick="sel('etat','bon',this)"><span class="opt-icon">✨</span>Bon état</button>
-      <button class="opt" onclick="sel('etat','premium',this)"><span class="opt-icon">💎</span>Premium</button>
+      <button type="button" class="opt" onclick="sel('etat','Standard',this)"><span class="opt-icon">🔑</span>Standard</button>
+      <button type="button" class="opt" onclick="sel('etat','Bon état',this)"><span class="opt-icon">✨</span>Bon état</button>
+      <button type="button" class="opt" onclick="sel('etat','Premium',this)"><span class="opt-icon">💎</span>Premium</button>
     </div>
   </div>
-
-  <button class="cta" id="btn1" onclick="goStep2()" disabled>Continuer →</button>
+  <button type="button" class="cta" id="btn1" onclick="goStep2()" disabled>Continuer →</button>
 </div>
 
-<!-- STEP 2 — COORDONNÉES -->
+<!-- STEP 2 — COORDONNÉES avec vraie form Formspree -->
 <div class="step" id="step2">
   <div class="stepper">
     <div class="sdot done">✓</div>
@@ -139,26 +135,33 @@ input::placeholder{color:#C4A882}
     <div class="sline"></div>
     <div class="sdot">3</div>
   </div>
-
   <div class="step2-promise">
     Vous y êtes presque — renseignez vos coordonnées et <strong>votre estimation s'affiche immédiatement</strong>. Notre équipe vous rappelle ensuite pour l'affiner.
   </div>
-
   <div class="card">
     <span class="flabel">Vos coordonnées</span>
-    <input type="text" id="c-nom" placeholder="Votre prénom *">
-    <input type="text" id="c-adresse" placeholder="Adresse ou quartier du bien *">
-    <input type="tel" id="c-tel" placeholder="Votre téléphone *">
-    <input type="email" id="c-email" placeholder="Votre email *">
-    <div class="err" id="err">Merci de renseigner tous les champs obligatoires.</div>
-    <div class="sending" id="sending">Envoi en cours...</div>
-    <button class="cta" id="btn2" onclick="goStep3()">Voir mon estimation instantanée →</button>
+    <form id="sim-form" action="https://formspree.io/f/mnjozwll" method="POST">
+      <input type="hidden" name="_subject" value="Nouvelle simulation locative Autonomly">
+      <input type="hidden" name="_next" value="https://autonomly.fr/simulateur.html#results">
+      <input type="hidden" id="h-type" name="Type de bien" value="">
+      <input type="hidden" id="h-zone" name="Zone" value="">
+      <input type="hidden" id="h-etat" name="Etat" value="">
+      <input type="hidden" id="h-revmoy" name="Revenu mensuel estimé" value="">
+      <input type="hidden" id="h-revan" name="Revenu annuel estimé" value="">
+      <input type="hidden" id="h-saving" name="Economie annuelle vs conciergerie" value="">
+      <input type="text" name="Prénom" id="c-nom" placeholder="Votre prénom *" required>
+      <input type="text" name="Adresse du bien" id="c-adresse" placeholder="Adresse ou quartier du bien *" required>
+      <input type="tel" name="Téléphone" id="c-tel" placeholder="Votre téléphone *" required>
+      <input type="email" name="Email" id="c-email" placeholder="Votre email *" required>
+      <div class="err" id="err">Merci de renseigner tous les champs obligatoires.</div>
+      <button type="button" class="cta" onclick="submitForm()">Voir mon estimation instantanée →</button>
+    </form>
     <p class="note-bas">Vos données sont confidentielles · Jamais revendues · Réponse sous 24h</p>
   </div>
 </div>
 
 <!-- STEP 3 — RÉSULTATS -->
-<div class="step" id="step3">
+<div class="step" id="step3" id="results">
   <div class="stepper">
     <div class="sdot done">✓</div>
     <div class="sline"></div>
@@ -166,7 +169,6 @@ input::placeholder{color:#C4A882}
     <div class="sline"></div>
     <div class="sdot done">✓</div>
   </div>
-
   <div class="res-header">
     <div class="res-title" id="res-title">Estimation pour votre bien</div>
     <div class="res-grid">
@@ -187,7 +189,6 @@ input::placeholder{color:#C4A882}
       <div class="saving-sub" id="saving-sub">—</div>
     </div>
   </div>
-
   <div class="seasons">
     <div class="season">
       <div class="season-name">Haute saison<br>juin – août</div>
@@ -205,14 +206,12 @@ input::placeholder{color:#C4A882}
       <div class="season-range">/mois estimé</div>
     </div>
   </div>
-
   <div class="disclaimer">
-    <strong>Estimation indicative</strong> — Ces chiffres sont basés sur les données moyennes du marché LCD à Nice. Les revenus réels dépendent de l'état du bien, de la qualité des photos et de l'optimisation de l'annonce. Notre équipe vous recontacte sous 24h pour affiner cette estimation selon votre bien spécifique.
+    <strong>Estimation indicative</strong> — Ces chiffres sont basés sur les données moyennes du marché LCD à Nice. Les revenus réels dépendent de l'état du bien, de la qualité des photos et de l'optimisation de l'annonce. Notre équipe vous recontacte sous 24h pour affiner cette estimation.
   </div>
-
   <div class="next-steps">
     <div class="next-title">Notre équipe vous rappelle sous 24h.</div>
-    <div class="next-sub">Nous allons analyser votre bien en détail et vous proposer une estimation personnalisée, ainsi qu'un plan d'action concret pour maximiser vos revenus avec Autonomly — gratuitement et sans engagement.</div>
+    <div class="next-sub">Nous allons analyser votre bien en détail et vous proposer une estimation personnalisée ainsi qu'un plan d'action concret — gratuitement et sans engagement.</div>
     <a href="https://autonomly.fr" class="next-btn">Découvrir Autonomly</a>
     <p class="note-bas" style="margin-top:16px">Gratuit · Sans engagement · Basé à Nice</p>
   </div>
@@ -221,18 +220,15 @@ input::placeholder{color:#C4A882}
 </div>
 <script>
 const s={type:null,zone:null,etat:null};
-const data={
-  studio:{haute:2800,moy:2000,basse:1200},
-  t1:    {haute:3800,moy:2600,basse:1500},
-  t2:    {haute:5200,moy:3500,basse:2000},
-  t3:    {haute:7000,moy:4800,basse:2900},
-  t4:    {haute:9500,moy:6800,basse:3800}
+const dataMap={
+  'Studio':{haute:2800,moy:2000,basse:1200},
+  'T1':    {haute:3800,moy:2600,basse:1500},
+  'T2':    {haute:5200,moy:3500,basse:2000},
+  'T3':    {haute:7000,moy:4800,basse:2900},
+  'T4+':   {haute:9500,moy:6800,basse:3800}
 };
-const zm={premium:1.25,forte:1.0,standard:0.78};
-const em={standard:0.88,bon:1.0,premium:1.15};
-const tl={studio:'Studio',t1:'T1',t2:'T2',t3:'T3',t4:'T4+'};
-const zl={premium:'Vieille Ville / Bord de mer',forte:'Centre / Promenade',standard:'Périphérie'};
-const el={standard:'Standard',bon:'Bon état',premium:'Premium'};
+const zm={'Vieille Ville / Bord de mer':1.25,'Centre / Promenade':1.0,'Périphérie / Aéroport':0.78};
+const em={'Standard':0.88,'Bon état':1.0,'Premium':1.15};
 const fmt=n=>Math.round(n).toLocaleString('fr-FR')+' €';
 
 function sel(key,val,btn){
@@ -248,62 +244,63 @@ function goStep2(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-async function goStep3(){
+function calcResults(){
+  const base=dataMap[s.type];
+  const z=zm[s.zone];
+  const e=em[s.etat];
+  const h=Math.round(base.haute*z*e);
+  const m=Math.round(base.moy*z*e);
+  const b=Math.round(base.basse*z*e);
+  const mensuel=Math.round((h*3+m*5+b*4)/12);
+  const annuel=mensuel*12;
+  const conc=Math.round(mensuel*0.23);
+  const econ=(conc-179)*12;
+  return {h,m,b,mensuel,annuel,conc,econ};
+}
+
+function submitForm(){
   const nom=document.getElementById('c-nom').value.trim();
   const tel=document.getElementById('c-tel').value.trim();
   const email=document.getElementById('c-email').value.trim();
   const adresse=document.getElementById('c-adresse').value.trim();
-
   if(!nom||!tel||!email||!adresse){
     document.getElementById('err').style.display='block';
     return;
   }
   document.getElementById('err').style.display='none';
-  document.getElementById('btn2').disabled=true;
-  document.getElementById('sending').style.display='block';
 
-  // Calcul résultats
-  const base=data[s.type];
-  const h=Math.round(base.haute*zm[s.zone]*em[s.etat]);
-  const m=Math.round(base.moy*zm[s.zone]*em[s.etat]);
-  const b=Math.round(base.basse*zm[s.zone]*em[s.etat]);
-  const mensuel=Math.round((h*3+m*5+b*4)/12);
-  const annuel=mensuel*12;
-  const conc=Math.round(mensuel*0.23);
-  const econ=(conc-179)*12;
+  const r=calcResults();
 
-  // Envoi Formspree
-  try {
-    await fetch('https://formspree.io/f/mnjozwll', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      body: JSON.stringify({
-        prenom: nom,
-        telephone: tel,
-        email: email,
-        adresse: adresse,
-        type_bien: tl[s.type],
-        zone: zl[s.zone],
-        etat: el[s.etat],
-        revenu_mensuel_estime: fmt(mensuel)+'/mois',
-        revenu_annuel_estime: fmt(annuel)+'/an',
-        economie_annuelle: econ>0?fmt(econ)+'/an':'—'
-      })
-    });
-  } catch(e) {
-    console.log('Formspree error', e);
-  }
+  // Remplir les champs cachés avec l'estimation
+  document.getElementById('h-type').value=s.type;
+  document.getElementById('h-zone').value=s.zone;
+  document.getElementById('h-etat').value=s.etat;
+  document.getElementById('h-revmoy').value=fmt(r.mensuel)+'/mois';
+  document.getElementById('h-revan').value=fmt(r.annuel)+'/an';
+  document.getElementById('h-saving').value=r.econ>0?fmt(r.econ)+'/an':'—';
 
-  // Affichage résultats
-  document.getElementById('res-title').textContent=`${tl[s.type]} · ${zl[s.zone]} · ${nom}`;
-  document.getElementById('rev-moy').textContent=fmt(mensuel)+'/mois';
-  document.getElementById('rev-an').textContent=fmt(annuel)+'/an';
-  document.getElementById('s-haute').textContent=fmt(h);
-  document.getElementById('s-moy').textContent=fmt(m);
-  document.getElementById('s-basse').textContent=fmt(b);
-  document.getElementById('saving').textContent=econ>0?fmt(econ)+'/an':'Autonomly compétitif';
-  document.getElementById('saving-sub').textContent=econ>0?`soit ${fmt(conc-179)} de plus dans votre poche chaque mois`:'Contactez-nous pour une estimation personnalisée';
+  // Afficher les résultats
+  showResults(r, nom);
 
+  // Soumettre le formulaire Formspree en arrière-plan
+  const form=document.getElementById('sim-form');
+  const data=new FormData(form);
+  fetch('https://formspree.io/f/mnjozwll',{
+    method:'POST',
+    body:data,
+    headers:{'Accept':'application/json'}
+  }).catch(e=>console.log('Formspree:',e));
+}
+
+function showResults(r, nom){
+  document.getElementById('res-title').textContent=`${s.type} · ${s.zone} · ${nom}`;
+  document.getElementById('rev-moy').textContent=fmt(r.mensuel)+'/mois';
+  document.getElementById('rev-an').textContent=fmt(r.annuel)+'/an';
+  document.getElementById('s-haute').textContent=fmt(r.h);
+  document.getElementById('s-moy').textContent=fmt(r.m);
+  document.getElementById('s-basse').textContent=fmt(r.b);
+  document.getElementById('saving').textContent=r.econ>0?fmt(r.econ)+'/an':'Autonomly compétitif';
+  document.getElementById('saving-sub').textContent=r.econ>0?`soit ${fmt(r.conc-179)} de plus dans votre poche chaque mois`:'Contactez-nous pour une estimation personnalisée';
   document.getElementById('step2').classList.remove('active');
   document.getElementById('step3').classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
